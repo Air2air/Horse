@@ -7,50 +7,48 @@
 #define LEG_4 11
 
 int Leg = 0;
-unsigned int Delay_For = 0;
-unsigned int Duration = 0;
-unsigned int Leg_Off = 0;
+unsigned long Wait = 0;
+unsigned long Duration = 0;
+unsigned long Leg_Off = 0;
 
 unsigned long Time_Taken_Wait = 0;
 unsigned long Time_Taken_High = 0;
 unsigned long Time_Taken_Off = 0;
 
 /* Outer Loop */
-const int Stride_Duration = 10000;
+unsigned long Stride_Duration = 10000;
 
 
 /* Leg 1 */
-const int Leg_1_Delay_For = 200;
-const int Leg_1_Duration = 2005;
+unsigned long Leg_1_Wait = 200;
+unsigned long Leg_1_Duration = 2005;
 
 /* Leg 2 */
-const int Leg_2_Delay_For = 4000;
-const int Leg_2_Duration = 2006;
+unsigned long Leg_2_Wait = 4000;
+unsigned long Leg_2_Duration = 2006;
 
 /* Leg 3 */
-const int Leg_3_Delay_For = 1700;
-const int Leg_3_Duration = 1813;
+unsigned long Leg_3_Wait = 1700;
+unsigned long Leg_3_Duration = 1813;
 
 /* Leg 4 */
-const int Leg_4_Delay_For = 1100;
-const int Leg_4_Duration = 1306;
+unsigned long Leg_4_Wait = 1100;
+unsigned long Leg_4_Duration = 1306;
 
+bool Print_Serial = 1;
 
-
-static int Stride(struct pt * pt, int Leg)
-
-{
+static int Stride(struct pt * pt, int Leg) {
   if (Leg == 1) {
-    Delay_For = Leg_1_Delay_For;
+    Wait = Leg_1_Wait;
     Duration = Leg_1_Duration;
   } else if (Leg == 2) {
-    Delay_For = Leg_2_Delay_For;
+    Wait = Leg_2_Wait;
     Duration = Leg_2_Duration;
   } else if (Leg == 3) {
-    Delay_For = Leg_3_Delay_For;
+    Wait = Leg_3_Wait;
     Duration = Leg_3_Duration;
   } else if (Leg == 4) {
-    Delay_For = Leg_4_Delay_For;
+    Wait = Leg_4_Wait;
     Duration = Leg_4_Duration;
   }
 
@@ -63,35 +61,30 @@ static int Stride(struct pt * pt, int Leg)
 
     while (1) {
 
-      Serial.print("\nStarting Leg ");
-      Serial.print(Leg);
-      Serial.print(" and waiting ");
-      Serial.print(Delay_For);
-      Serial.println("ms to start.");
+      if (Print_Serial) {
+        Serial_Start(Leg, Wait);
+      }
+
 
       last_Time_Marker = millis();
-      PT_WAIT_UNTIL(pt, millis() - last_Time_Marker > Delay_For);
+
+      PT_WAIT_UNTIL(pt, millis() - last_Time_Marker > Wait);
+
 
       digitalWrite(Leg, HIGH);
 
-      Serial.print("Leg ");
-      Serial.print(Leg);
-      Serial.print(" waited ");
-      Serial.print(Delay_For);
-      Serial.print("ms and is HIGH for ");
-      Serial.print(Duration);
-      Serial.println("ms.");
+      if (Print_Serial) {
+        Serial_Wait(Leg, Wait, Duration);
+      }
 
       last_Time_Marker = millis();
       PT_WAIT_UNTIL(pt, millis() - last_Time_Marker > Duration);
 
       digitalWrite(Leg, LOW);
 
-      Serial.print("Leg ");
-      Serial.print(Leg);
-      Serial.print(" went OFF after ");
-      Serial.print(Duration);
-      Serial.println("ms.");
+      if (Print_Serial) {
+        Serial_Off(Leg, Duration);
+      }
 
       PT_WAIT_UNTIL(pt, millis() >= Start_Time + Stride_Duration);
 
@@ -103,29 +96,4 @@ static int Stride(struct pt * pt, int Leg)
 
   }
   return Leg = 0;
-}
-
-
-static struct pt pt1, pt2, pt3, pt4;
-
-void setup() {
-  pinMode(LEG_1, OUTPUT);
-  pinMode(LEG_2, OUTPUT);
-  pinMode(LEG_3, OUTPUT);
-  pinMode(LEG_4, OUTPUT);
-
-  PT_INIT(&pt1);
-  PT_INIT(&pt2);
-  PT_INIT(&pt3);
-  PT_INIT(&pt4);
-
-  Serial.begin(115200);
-  while (! Serial);
-}
-
-void loop() {
-  Stride(&pt1, 1);
-  Stride(&pt2, 2);
-  Stride(&pt3, 3);
-  Stride(&pt4, 4);
 }
