@@ -23,7 +23,6 @@ unsigned long Stride_Duration = 10000;
 unsigned long LEG_1_WAIT = 200;
 unsigned long LEG_1_DURATION = 2005;
 
-
 /* Leg 2 */
 unsigned long LEG_2_WAIT = 4000;
 unsigned long LEG_2_DURATION = 2006;
@@ -40,8 +39,6 @@ bool Print_Serial = 1;
 bool Print_Counter = 0;
 
 static struct pt pt1, pt2, pt3, pt4;
-
-
 
 void setup() {
   pinMode(LEG_1, OUTPUT);
