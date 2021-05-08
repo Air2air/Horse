@@ -38,6 +38,7 @@ unsigned long Leg_4_Duration = 1306;
 bool Print_Serial = 1;
 
 static int Stride(struct pt * pt, int Leg) {
+  
   if (Leg == 1) {
     Wait = Leg_1_Wait;
     Duration = Leg_1_Duration;
@@ -64,7 +65,6 @@ static int Stride(struct pt * pt, int Leg) {
       if (Print_Serial) {
         Serial_Start(Leg, Wait);
       }
-
 
       last_Time_Marker = millis();
 
