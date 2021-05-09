@@ -1,29 +1,31 @@
 
 static int Stride3(struct pt * pt) {
+  static unsigned long PWM_High = LEG_3_PWM_HIGH;
   static unsigned long Leg = LEG_3;
   static unsigned long Wait = LEG_3_WAIT;
   static unsigned long Duration = LEG_3_DURATION;
   static unsigned long Start_Time_Marker;
-  static unsigned long GoHighTime = Wait;
-  static unsigned long GoOffTime = GoHighTime + Duration;
+  static unsigned long Go_PWM_High_Time = Wait;
+  static unsigned long GoOffTime = Go_PWM_High_Time + Duration;
   static unsigned long StayOffTime = Stride_Duration - GoOffTime;
   static unsigned long EndLoopTime = Stride_Duration;
   PT_BEGIN(pt);
   while (1) {
+    analogWrite(Leg, 0);
     Start_Time_Marker = millis();
     //Start
     if (Print_Serial) {
       Serial_Start(Leg, Wait);
     }
-    // Go High
-    PT_WAIT_UNTIL(pt, millis() - Start_Time_Marker >= GoHighTime);
-    digitalWrite(Leg, HIGH);
+    // Go PWM_HIGH
+    PT_WAIT_UNTIL(pt, millis() - Start_Time_Marker >= Go_PWM_High_Time);
+    analogWrite(Leg, PWM_High);
     if (Print_Serial) {
-      Serial_Wait(Leg, GoHighTime, Duration);
+      Serial_Wait(Leg, Go_PWM_High_Time, PWM_High, Duration);
     }
-    // High Duration ended
+    // PWM_High Duration ended
     PT_WAIT_UNTIL(pt, millis() - Start_Time_Marker >= GoOffTime);
-    digitalWrite(Leg, LOW);
+    analogWrite(Leg, PWM_LOW);
     if (Print_Serial) {
       Serial_Off(Leg, GoOffTime, StayOffTime );
     }

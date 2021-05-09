@@ -1,39 +1,42 @@
 #include <Arduino.h>
 #include <pt.h>
 
-#define LEG_1 8
-#define LEG_2 9
-#define LEG_3 10
-#define LEG_4 11
+byte LEG_1 = 11;
+byte LEG_2 = 10;
+byte LEG_3 = 9;
+byte LEG_4 = 6;
 
 int Leg = 0;
 unsigned long Wait = 0;
 unsigned long Duration = 0;
-unsigned long LEG_Off = 0;
 
-unsigned long Time_Taken_WAIT = 0;
-unsigned long Time_Taken_High = 0;
-unsigned long Time_Taken_Off = 0;
+
+/* Master PWM */
+int PWM_HIGH = 60;
+int PWM_LOW = 0;
 
 /* Outer Loop */
-unsigned long Stride_Duration = 10000;
-
+unsigned long Stride_Duration = 12000;
 
 /* Leg 1 */
-unsigned long LEG_1_WAIT = 200;
-unsigned long LEG_1_DURATION = 2005;
+float Leg_1_Bias = .1;
+unsigned long LEG_1_WAIT = 100;
+unsigned long LEG_1_DURATION = 3000;
 
 /* Leg 2 */
-unsigned long LEG_2_WAIT = 4000;
-unsigned long LEG_2_DURATION = 2006;
+float Leg_2_Bias = .9;
+unsigned long LEG_2_WAIT = 1000;
+unsigned long LEG_2_DURATION = 3000;
 
 /* Leg 3 */
-unsigned long LEG_3_WAIT = 1700;
-unsigned long LEG_3_DURATION = 1813;
+float Leg_3_Bias = .9;
+unsigned long LEG_3_WAIT = 3000;
+unsigned long LEG_3_DURATION = 3000;
 
 /* Leg 4 */
-unsigned long LEG_4_WAIT = 1100;
-unsigned long LEG_4_DURATION = 1306;
+float Leg_4_Bias = .7;
+unsigned long LEG_4_WAIT = 5000;
+unsigned long LEG_4_DURATION = 3000;
 
 bool Print_Serial = 1;
 bool Print_Counter = 0;
@@ -53,4 +56,9 @@ void setup() {
 
   Serial.begin(115200);
   while (! Serial);
+
+  analogWrite(LEG_1, 0);
+  analogWrite(LEG_2, 0);
+  analogWrite(LEG_3, 0);
+  analogWrite(LEG_4, 0);
 }
