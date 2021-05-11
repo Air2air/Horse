@@ -1,53 +1,57 @@
-#include <Arduino.h>
+// #include <Arduino.h>
 #include <pt.h>
 
-byte LEG_1 = 11;
-byte LEG_2 = 10;
-byte LEG_3 = 9;
-byte LEG_4 = 6;
+int HIP = 11;
+int THIGH = 10;
+int KNEE = 9;
+int HOOF = 6;
 
 int Leg = 0;
 unsigned long Wait = 0;
 unsigned long Duration = 0;
 
 
+bool Print_Serial = 1;
+
 /* Master PWM */
-int PWM_HIGH = 60;
+int PWM_HIGH = 28;
 int PWM_LOW = 0;
 
 /* Outer Loop */
-unsigned long Stride_Duration = 12000;
+unsigned long Stride_Duration = 8250;
 
-/* Leg 1 */
-float Leg_1_Bias = .1;
-unsigned long LEG_1_WAIT = 100;
-unsigned long LEG_1_DURATION = 3000;
+/* Ramp */
+unsigned long Ramp_Time_Increment = 70;
+unsigned long Ramp_PWM_Increment = 2;
 
-/* Leg 2 */
-float Leg_2_Bias = .9;
-unsigned long LEG_2_WAIT = 1000;
-unsigned long LEG_2_DURATION = 3000;
+/* Hip */
+float Hip_Bias = .5;
+unsigned long HIP_WAIT = 200;
+unsigned long HIP_DURATION = 3000;
 
-/* Leg 3 */
-float Leg_3_Bias = .9;
-unsigned long LEG_3_WAIT = 3000;
-unsigned long LEG_3_DURATION = 3000;
+/* Thigh */
+float Thigh_Bias = 1;
+unsigned long THIGH_WAIT = 5000;
+unsigned long THIGH_DURATION = 1000;
 
-/* Leg 4 */
-float Leg_4_Bias = .7;
-unsigned long LEG_4_WAIT = 5000;
-unsigned long LEG_4_DURATION = 3000;
+/* Leg */
+float Knee_Bias = 1;
+unsigned long KNEE_WAIT = 1000;
+unsigned long KNEE_DURATION = 1000;
 
-bool Print_Serial = 1;
-bool Print_Counter = 0;
+/* Hoof */
+float Hoof_Bias = .5;
+unsigned long HOOF_WAIT =1000;
+unsigned long HOOF_DURATION = 1000;
+
 
 static struct pt pt1, pt2, pt3, pt4;
 
 void setup() {
-  pinMode(LEG_1, OUTPUT);
-  pinMode(LEG_2, OUTPUT);
-  pinMode(LEG_3, OUTPUT);
-  pinMode(LEG_4, OUTPUT);
+  pinMode(HIP, OUTPUT);
+  pinMode(THIGH, OUTPUT);
+  pinMode(KNEE, OUTPUT);
+  pinMode(HOOF, OUTPUT);
 
   PT_INIT(&pt1);
   PT_INIT(&pt2);
@@ -57,8 +61,8 @@ void setup() {
   Serial.begin(115200);
   while (! Serial);
 
-  analogWrite(LEG_1, 0);
-  analogWrite(LEG_2, 0);
-  analogWrite(LEG_3, 0);
-  analogWrite(LEG_4, 0);
+  analogWrite(HIP, 0);
+  analogWrite(THIGH, 0);
+  analogWrite(KNEE, 0);
+  analogWrite(HOOF, 0);
 }
