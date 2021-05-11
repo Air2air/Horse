@@ -20,10 +20,10 @@ void Serial_Start(int Leg, int Wait) {
   Serial.println(" to start.");
 }
 
-void Serial_Wait(int Leg, int Go_PWM_High_Time, int PWM_High, int Duration ) {
+void Serial_Wait(int Leg, int Start_PWM_High, int PWM_High, int Duration ) {
   Print_Leg(Leg);
   Serial.print("going HIGH at ");
-  Serial.print(Go_PWM_High_Time);
+  Serial.print(Start_PWM_High);
   Serial.print(" at ");
   Serial.print(PWM_High);
   Serial.print(" PWM for ");

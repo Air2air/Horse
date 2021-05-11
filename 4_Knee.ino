@@ -5,9 +5,10 @@ static int Stride_Knee(struct pt * pt) {
   static unsigned long Leg = KNEE;
   static unsigned long Wait = KNEE_WAIT;
   static unsigned long Duration = KNEE_DURATION;
+  static unsigned long Ramp_Increment = KNEE_PWM_INCREMENT;
   static unsigned long Start_Time_Marker;
-  static unsigned long Go_PWM_High_Time = Wait;
-  static unsigned long StartRampDown = Go_PWM_High_Time + Duration;
+  static unsigned long StartRampUp = Wait;
+  static unsigned long StartRampDown = Wait + Duration;
   static unsigned long GoOffTime;
   static unsigned long Stay_Off_Time;
   static unsigned long This_PWM;
@@ -22,57 +23,95 @@ static int Stride_Knee(struct pt * pt) {
       Serial_Start(Leg, Wait);
     }
 
-    // Go PWM_HIGH
-    PT_WAIT_UNTIL(pt, millis() - Start_Time_Marker >= Go_PWM_High_Time);
-    Analog_Write(Leg, PWM_High);
+    // Ramp Up
+    PT_WAIT_UNTIL(pt, millis() - Start_Time_Marker >= StartRampUp);
+    Next_Ramp_Time = (StartRampUp + Ramp_Time_Increment);// Different for this first one
+    This_PWM = 0 + Ramp_Increment;// Different for this first one
+    Analog_Write(Leg, This_PWM);
+
+    PT_WAIT_UNTIL(pt, millis() - Start_Time_Marker >= Next_Ramp_Time);
+    Next_Ramp_Time = (Next_Ramp_Time + Ramp_Time_Increment);
+    This_PWM = This_PWM + Ramp_Increment;
+    Analog_Write(Leg, This_PWM);
+
+    PT_WAIT_UNTIL(pt, millis() - Start_Time_Marker >= Next_Ramp_Time);
+    Next_Ramp_Time = (Next_Ramp_Time + Ramp_Time_Increment);
+    This_PWM = This_PWM + Ramp_Increment;
+    Analog_Write(Leg, This_PWM);
+
+    PT_WAIT_UNTIL(pt, millis() - Start_Time_Marker >= Next_Ramp_Time);
+    Next_Ramp_Time = (Next_Ramp_Time + Ramp_Time_Increment);
+    This_PWM = This_PWM + Ramp_Increment;
+    Analog_Write(Leg, This_PWM);
+
+    PT_WAIT_UNTIL(pt, millis() - Start_Time_Marker >= Next_Ramp_Time);
+    Next_Ramp_Time = (Next_Ramp_Time + Ramp_Time_Increment);
+    This_PWM = This_PWM + Ramp_Increment;
+    Analog_Write(Leg, This_PWM);
+
+    PT_WAIT_UNTIL(pt, millis() - Start_Time_Marker >= Next_Ramp_Time);
+    Next_Ramp_Time = (Next_Ramp_Time + Ramp_Time_Increment);
+    This_PWM = This_PWM + Ramp_Increment;
+    Analog_Write(Leg, This_PWM);
+
+    PT_WAIT_UNTIL(pt, millis() - Start_Time_Marker >= Next_Ramp_Time);
+    Next_Ramp_Time = (Next_Ramp_Time + Ramp_Time_Increment);
+    This_PWM = This_PWM + Ramp_Increment;
+    Analog_Write(Leg, This_PWM);
+
+    PT_WAIT_UNTIL(pt, millis() - Start_Time_Marker >= Next_Ramp_Time);
+    Next_Ramp_Time = (Next_Ramp_Time + Ramp_Time_Increment);
+    This_PWM = This_PWM + Ramp_Increment;
+    Analog_Write(Leg, This_PWM);
+
+
 
     // Ramp Down
     PT_WAIT_UNTIL(pt, millis() - Start_Time_Marker >= StartRampDown);
     Next_Ramp_Time = (StartRampDown + Ramp_Time_Increment);// Different for this first one
-    This_PWM = PWM_High - Ramp_PWM_Increment;// Different for this first one
+    This_PWM = PWM_High - Ramp_Increment;// Different for this first one
     Analog_Write(Leg, This_PWM);
 
     PT_WAIT_UNTIL(pt, millis() - Start_Time_Marker >= Next_Ramp_Time);
     Next_Ramp_Time = (Next_Ramp_Time + Ramp_Time_Increment);
-    This_PWM = This_PWM - Ramp_PWM_Increment;
+    This_PWM = This_PWM - Ramp_Increment;
     Analog_Write(Leg, This_PWM);
 
     PT_WAIT_UNTIL(pt, millis() - Start_Time_Marker >= Next_Ramp_Time);
     Next_Ramp_Time = (Next_Ramp_Time + Ramp_Time_Increment);
-    This_PWM = This_PWM - Ramp_PWM_Increment;
+    This_PWM = This_PWM - Ramp_Increment;
     Analog_Write(Leg, This_PWM);
 
     PT_WAIT_UNTIL(pt, millis() - Start_Time_Marker >= Next_Ramp_Time);
     Next_Ramp_Time = (Next_Ramp_Time + Ramp_Time_Increment);
-    This_PWM = This_PWM - Ramp_PWM_Increment;
+    This_PWM = This_PWM - Ramp_Increment;
     Analog_Write(Leg, This_PWM);
 
     PT_WAIT_UNTIL(pt, millis() - Start_Time_Marker >= Next_Ramp_Time);
     Next_Ramp_Time = (Next_Ramp_Time + Ramp_Time_Increment);
-    This_PWM = This_PWM - Ramp_PWM_Increment;
+    This_PWM = This_PWM - Ramp_Increment;
     Analog_Write(Leg, This_PWM);
 
     PT_WAIT_UNTIL(pt, millis() - Start_Time_Marker >= Next_Ramp_Time);
     Next_Ramp_Time = (Next_Ramp_Time + Ramp_Time_Increment);
-    This_PWM = This_PWM - Ramp_PWM_Increment;
+    This_PWM = This_PWM - Ramp_Increment;
     Analog_Write(Leg, This_PWM);
 
     PT_WAIT_UNTIL(pt, millis() - Start_Time_Marker >= Next_Ramp_Time);
     Next_Ramp_Time = (Next_Ramp_Time + Ramp_Time_Increment);
-    This_PWM = This_PWM - Ramp_PWM_Increment;
+    This_PWM = This_PWM - Ramp_Increment;
     Analog_Write(Leg, This_PWM);
 
     PT_WAIT_UNTIL(pt, millis() - Start_Time_Marker >= Next_Ramp_Time);
     Next_Ramp_Time = (Next_Ramp_Time + Ramp_Time_Increment);
-    This_PWM = This_PWM - Ramp_PWM_Increment;
+    This_PWM = This_PWM - Ramp_Increment;
     Analog_Write(Leg, This_PWM);
 
-    PT_WAIT_UNTIL(pt, millis() - Start_Time_Marker >= Next_Ramp_Time);
-    Next_Ramp_Time = (Next_Ramp_Time + Ramp_Time_Increment);
-    This_PWM = This_PWM - Ramp_PWM_Increment;
-    Analog_Write(Leg, This_PWM);
 
-    // Ramp Down ended
+
+
+
+    // Go Off
     PT_WAIT_UNTIL(pt, millis() - Start_Time_Marker >= Next_Ramp_Time);
     GoOffTime = Next_Ramp_Time;
     Stay_Off_Time = Stride_Duration - Next_Ramp_Time;

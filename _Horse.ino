@@ -22,27 +22,27 @@ unsigned long Stride_Duration = 8250;
 
 /* Ramp */
 unsigned long Ramp_Time_Increment = 70;
-unsigned long Ramp_PWM_Increment = 2;
+unsigned long Ramp_PWM_Increment = 0;
 
 /* Hip */
-float Hip_Bias = .5;
+float Hip_Bias = .9;
 unsigned long HIP_WAIT = 200;
 unsigned long HIP_DURATION = 3000;
 
 /* Thigh */
 float Thigh_Bias = 1;
 unsigned long THIGH_WAIT = 5000;
-unsigned long THIGH_DURATION = 1000;
+unsigned long THIGH_DURATION = 2000;
 
 /* Leg */
 float Knee_Bias = 1;
 unsigned long KNEE_WAIT = 1000;
-unsigned long KNEE_DURATION = 1000;
+unsigned long KNEE_DURATION = 2000;
 
 /* Hoof */
 float Hoof_Bias = .5;
 unsigned long HOOF_WAIT =1000;
-unsigned long HOOF_DURATION = 1000;
+unsigned long HOOF_DURATION = 2000;
 
 
 static struct pt pt1, pt2, pt3, pt4;
